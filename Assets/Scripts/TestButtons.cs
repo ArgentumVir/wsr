@@ -18,6 +18,19 @@ public class TestButtons : MonoBehaviour
     public void RespawnPlayer()
     {
         SpawnHandler.Singleton.DespawnPlayer();
-        SpawnHandler.Singleton.SpawnPlayer(SceneEntry.Singleton.SpawnPoint);
+        SpawnHandler.Singleton.SpawnPlayer(LevelGenerator.Singleton.SpawnPoint);
+    }
+
+    public void RegenerateWorld()
+    {
+        SpawnHandler.Singleton.DespawnPlayer();
+        LevelGenerator.Singleton.DestroyLevel();
+        LevelGenerator.Singleton.GenerateLevel();
+        SpawnHandler.Singleton.SpawnPlayer(LevelGenerator.Singleton.SpawnPoint);
+    }
+
+    public void ZoomOut()
+    {
+        PlayerCamera.Singleton.Camera.orthographicSize += 5;
     }
 }

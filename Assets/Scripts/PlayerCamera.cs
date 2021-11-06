@@ -11,10 +11,12 @@ public class PlayerCamera : MonoBehaviour
     float smoothTime = 0.2f, playerZPosition;
     // Start is called before the first frame update
     public static PlayerCamera Singleton;
+    public Camera Camera;
     
     void Awake()
     {
         Singleton = this;
+        Camera = GetComponent<Camera>();
     }
 
 

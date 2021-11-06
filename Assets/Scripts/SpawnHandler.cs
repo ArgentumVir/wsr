@@ -19,9 +19,9 @@ public class SpawnHandler : MonoBehaviour
         Destroy(Player);
     }
 
-    public void SpawnPlayer(Transform spawnPoint)
+    public void SpawnPlayer(Vector3 spawnPoint)
     {
-        Player = Instantiate(PlayerPrefab, spawnPoint.position,  Quaternion.identity);
+        Player = Instantiate(PlayerPrefab, spawnPoint,  Quaternion.identity);
         PlayerCamera.Singleton.SetPlayer(Player.transform);
     }
 

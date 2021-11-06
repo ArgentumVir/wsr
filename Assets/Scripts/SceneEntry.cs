@@ -12,6 +12,10 @@ public class SceneEntry : MonoBehaviour
     }
     void Start()
     {
-        SpawnHandler.Singleton.SpawnPlayer(SpawnPoint);
+        // SpawnHandler.Singleton.SpawnPlayer(SpawnPoint);
+        LevelGenerator.Singleton.GenerateLevel();
+        SpawnHandler.Singleton.SpawnPlayer(
+            LevelGenerator.Singleton.SpawnPoint
+        );
     }
 }

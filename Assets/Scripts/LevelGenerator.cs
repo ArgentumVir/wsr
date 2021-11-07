@@ -11,6 +11,8 @@ public class LevelGenerator : MonoBehaviour
         wall
     };
 
+    public List<Vector2> EnemySpawns;
+
     public Tilemap walkableTilemap, blockingTilemap;
 
     gridSpace[,] grid;
@@ -26,12 +28,13 @@ public class LevelGenerator : MonoBehaviour
     float chanceWalkerChangeDir = 0.5f;
     float chanceWalkerSpawn = 0.05f;
     float chanceWalkerDestroy = 0.05f;
+    float enemySpawnChance = 0.1f;
     float maxWalkers = 10;
     float percentToFill = 0.2f;
     public Tile wallTile, floorTile;
     public static LevelGenerator Singleton;
     public Vector3 SpawnPoint;
-    
+    public Vector3Int SpawnPointGridLocation;
     void Awake()
     {
         Singleton = this;
@@ -51,6 +54,7 @@ public class LevelGenerator : MonoBehaviour
                     if (foundSpawn)
                     {
                         var pos = walkableTilemap.CellToWorld(new Vector3Int(x, y, 0));
+                        SpawnPointGridLocation = new Vector3Int(x, y, 0);
                         SpawnPoint = new Vector3(pos.x + .5f, pos.y + .5f, 0);
                         return true;
                     }
@@ -79,6 +83,39 @@ public class LevelGenerator : MonoBehaviour
         return true;
     }
 
+
+    void SetEnemies()
+    {
+        for (int x = 0; x < roomWidth; x++)
+        {
+            for (int y = 0; y < roomHeight; y++)
+            {
+                if (grid[x,y] == gridSpace.floor && Random.value < enemySpawnChance && isFarFromPlayer(x, y, 4))
+                {
+                    var position = walkableTilemap.CellToWorld(new Vector3Int(x, y, 0));
+                    EnemySpawns.Add(new Vector3(position.x + .5f, position.y + .5f, 0));
+                }
+            }
+        }
+    }
+    bool isFarFromPlayer(int x, int y, int tilesAway)
+    {
+        for (int i = 1; i <= tilesAway; i++)
+        {
+            if(
+                !((x + i < grid.GetLength(0)) && SpawnPointGridLocation.x != x + i) ||
+                !((x - i >= 0) && SpawnPointGridLocation.x != x - i) ||
+                !((y + i < grid.GetLength(1)) && SpawnPointGridLocation.y != y + i) ||
+                !((y - i >= 0) && SpawnPointGridLocation.y != y - i)
+            )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void DestroyLevel()
     {
         walkableTilemap.ClearAllTiles();
@@ -96,6 +133,7 @@ public class LevelGenerator : MonoBehaviour
         } while (!SetSpawnPoint());
 
         SpawnLevel();
+        SetEnemies();
     }
 
     void Setup()
@@ -103,6 +141,7 @@ public class LevelGenerator : MonoBehaviour
         roomHeight = Mathf.RoundToInt(roomSizeWorldUnits.x / worldUnitsInOneGridCell);
         roomWidth = Mathf.RoundToInt(roomSizeWorldUnits.y / worldUnitsInOneGridCell);
 
+        EnemySpawns = new List<Vector2>();
         grid = new gridSpace[roomWidth, roomHeight];
 
         for (int x = 0; x < roomWidth - 1; x++)

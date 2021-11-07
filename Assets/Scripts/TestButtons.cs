@@ -24,9 +24,11 @@ public class TestButtons : MonoBehaviour
     public void RegenerateWorld()
     {
         SpawnHandler.Singleton.DespawnPlayer();
+        SpawnHandler.Singleton.DespawnEnemies();
         LevelGenerator.Singleton.DestroyLevel();
         LevelGenerator.Singleton.GenerateLevel();
         SpawnHandler.Singleton.SpawnPlayer(LevelGenerator.Singleton.SpawnPoint);
+        SpawnHandler.Singleton.SpawnEnemies(LevelGenerator.Singleton.EnemySpawns);
     }
 
     public void ZoomOut()

@@ -14,6 +14,9 @@ public class SceneEntry : MonoBehaviour
     {
         // SpawnHandler.Singleton.SpawnPlayer(SpawnPoint);
         LevelGenerator.Singleton.GenerateLevel();
+        SpawnHandler.Singleton.SpawnEnemies(
+            LevelGenerator.Singleton.EnemySpawns
+        );
         SpawnHandler.Singleton.SpawnPlayer(
             LevelGenerator.Singleton.SpawnPoint
         );

@@ -7,8 +7,8 @@ public class PlayerCamera : MonoBehaviour
 
     public Transform Player;
     Vector3 target, mousePosition, wtf;
-    float maxCameraDistance = 3.5f;
-    float smoothTime = 0.2f, playerZPosition;
+    public float maxCameraDistance = 2.0f;
+    public float smoothTime = 0.2f, playerZPosition;
     // Start is called before the first frame update
     public static PlayerCamera Singleton;
     public Camera Camera;
